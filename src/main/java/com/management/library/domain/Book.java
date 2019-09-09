@@ -8,16 +8,16 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "book")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Book {
 
 	@Id
-	@GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-    strategy = "org.hibernate.id.UUIDGenerator"
-    )
+	@GenericGenerator(name = "string_based_custom_sequence", strategy = "com.management.library.generator.ISBNGenerator")
+	@GeneratedValue(generator = "string_based_custom_sequence")
 	@Column(name = "ISBN")
 	private String ISBN;
 	@Column(name = "title")
