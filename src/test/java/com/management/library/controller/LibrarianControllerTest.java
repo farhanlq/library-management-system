@@ -1,8 +1,10 @@
 package com.management.library.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.util.List;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,23 +30,32 @@ public class LibrarianControllerTest {
 
 	@MockBean
 	private LibrarianService librarianService;
-	private JacksonTester<List<Book>> jsonList;
+
+	private JacksonTester<Book> jsonList;
+
 	@Autowired
 	private MockMvc mockMvc;
-	private Book book;
 
 	@Before
 	public void setUp() throws Exception {
 		JacksonTester.initFields(this, new ObjectMapper());
-		book = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
 	}
 
 	@Test
-	public void testGetAddBook() {
+	public void testGetAddBook() throws IOException, Exception {
 		Book checkBook = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
-		when(librarianService.addBooks(Mockito.any(Book.class))).thenReturn(book);
-		// MockHttpServletResponse response =
-		// mockMvc.perform(post("/librarian/books").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(jsonList.write())).
+		when(librarianService.addBooks(Mockito.any(Book.class))).thenReturn(checkBook);
+
+		MockHttpServletResponse response = mockMvc.perform(post("/librarian/books")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonList.write(checkBook).getJson())).andReturn()
+				.getResponse();
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+		assertThat(response.getContentAsString())
+				.isEqualTo(jsonList
+						.write(new Book(checkBook.getISBN(), checkBook.getTitle(), checkBook.getSubject(),
+								checkBook.getPublisher(), checkBook.getLanguage(), checkBook.getNumberOfPages()))
+						.getJson());
 	}
 
 }
