@@ -23,7 +23,7 @@ public class LibrarianController {
 
 	@PostMapping
 	public ResponseEntity<Book> addBooks(@RequestBody Book book) {
-		log.info("Entering addBooks method ");
+		log.info("Entering addBooks method {}",book);
 		librarianService.addBooks(book);
 		log.info("Exiting addBooks method ");
 		return ResponseEntity.ok(book);
