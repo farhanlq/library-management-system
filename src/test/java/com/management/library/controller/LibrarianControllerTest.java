@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,4 +93,21 @@ public class LibrarianControllerTest {
 
 		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(book1).getJson());
 	}
+
+	@Test
+	public void testUpdateBook() throws Exception {
+
+		Book book1 = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
+		String isbn = book1.getISBN();
+		Book bookDetails = new Book("EMP_6953_2019", "Hibernate with JPA", "Java", "IGH Pubications", "English", 1532);
+		when(librarianService.updateBook(isbn, bookDetails)).thenReturn(bookDetails);
+
+		MockHttpServletResponse response = mockMvc.perform(put("/librarian/books/{isbn}", "EMP_6953_2019")).andReturn()
+				.getResponse();
+
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(bookDetails).getJson());
+	}
+
 }
