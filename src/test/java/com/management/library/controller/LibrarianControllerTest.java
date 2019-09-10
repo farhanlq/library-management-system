@@ -80,4 +80,16 @@ public class LibrarianControllerTest {
 		assertThat(response.getContentAsString()).isEqualTo(jsonResultBookList.write(bookList).getJson());
 	}
 
+	@Test
+	public void testGetBookByISBN() throws Exception {
+		Book book1 = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
+		String isbn = book1.getISBN();
+		when(librarianService.getBookByISBN(isbn)).thenReturn(book1);
+		MockHttpServletResponse response = mockMvc.perform(get("/librarian/books/{isbn}", "EMP_6953_2019")).andReturn()
+				.getResponse();
+
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(book1).getJson());
+	}
 }
