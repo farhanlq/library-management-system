@@ -3,12 +3,15 @@ package com.management.library.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -109,7 +112,21 @@ public class LibrarianControllerTest {
 				.write(new Book(bookDetails.getISBN(), bookDetails.getTitle(), bookDetails.getSubject(),
 						bookDetails.getPublisher(), bookDetails.getLanguage(), bookDetails.getNumberOfPages()))
 				.getJson());
-
 	}
 
+	@Test
+	public void testDeleteBook() throws IOException, Exception {
+		Book book1 = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
+		String isbn = book1.getISBN();
+		Map<String, Boolean> value = new HashMap<>();
+		value.put("Deleted", Boolean.TRUE);
+		when(librarianService.deleteBook(isbn)).thenReturn(value);
+		MockHttpServletResponse response = mockMvc.perform(delete("/librarian/{isbn}", "EMP_6953_2019")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonList.write(book1).getJson())).andReturn()
+				.getResponse();
+
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(book1).getJson());
+	}
 }
