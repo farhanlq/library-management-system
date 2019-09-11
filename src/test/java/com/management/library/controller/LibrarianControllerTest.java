@@ -101,13 +101,15 @@ public class LibrarianControllerTest {
 		String isbn = book1.getISBN();
 		Book bookDetails = new Book("EMP_6953_2019", "Hibernate with JPA", "Java", "IGH Pubications", "English", 1532);
 		when(librarianService.updateBook(isbn, bookDetails)).thenReturn(bookDetails);
-
-		MockHttpServletResponse response = mockMvc.perform(put("/librarian/books/{isbn}", "EMP_6953_2019")).andReturn()
+		MockHttpServletResponse response = mockMvc.perform(put("/librarian/books/{isbn}", "EMP_6953_2019")
+				.contentType(MediaType.APPLICATION_JSON).content(jsonList.write(bookDetails).getJson())).andReturn()
 				.getResponse();
-
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		assertThat(response.getContentAsString()).isEqualTo(jsonList
+				.write(new Book(bookDetails.getISBN(), bookDetails.getTitle(), bookDetails.getSubject(),
+						bookDetails.getPublisher(), bookDetails.getLanguage(), bookDetails.getNumberOfPages()))
+				.getJson());
 
-		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(bookDetails).getJson());
 	}
 
 }
