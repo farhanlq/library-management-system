@@ -121,12 +121,12 @@ public class LibrarianControllerTest {
 		Map<String, Boolean> value = new HashMap<>();
 		value.put("Deleted", Boolean.TRUE);
 		when(librarianService.deleteBook(isbn)).thenReturn(value);
-		MockHttpServletResponse response = mockMvc.perform(delete("/librarian/{isbn}", "EMP_6953_2019")
+		MockHttpServletResponse response = mockMvc.perform(delete("/librarian/books/{isbn}", isbn)
 				.contentType(MediaType.APPLICATION_JSON).content(jsonList.write(book1).getJson())).andReturn()
 				.getResponse();
 
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
-		assertThat(response.getContentAsString()).isEqualTo(jsonList.write(book1).getJson());
+		assertThat(response.getContentAsString()).isEqualTo(value);
 	}
 }
