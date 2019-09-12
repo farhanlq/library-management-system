@@ -3,6 +3,9 @@ package com.management.library.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -31,8 +34,16 @@ public class LibrarianServiceTest {
 
 		when(librarianRepository.save(addBook)).thenReturn(addBook);
 		assertThat(librarianService.addBooks(addBook)).isEqualTo(addBook);
-		//assertThat(librarianRepository).isNotNull();
+	}
 
+	@Test
+	public void testGetAllBooks() {
+		Book addBook = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
+		List<Book> bookList = new ArrayList<>();
+		bookList.add(addBook);
+		bookList.add(addBook);
+		when(librarianRepository.findAll()).thenReturn(bookList);
+		assertThat(librarianService.getAllBooks()).isEqualTo(bookList);
 	}
 
 }
