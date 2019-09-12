@@ -40,6 +40,8 @@ public class LibrarianControllerTest {
 
 	private JacksonTester<Book> jsonList;
 
+	private JacksonTester<Map> jsonMap;
+
 	private JacksonTester<List<Book>> jsonResultBookList;
 
 	@Autowired
@@ -127,6 +129,6 @@ public class LibrarianControllerTest {
 
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
-		assertThat(response.getContentAsString()).isEqualTo(value);
+		assertThat(response.getContentAsString()).isEqualTo(jsonMap.write(value).getJson());
 	}
 }

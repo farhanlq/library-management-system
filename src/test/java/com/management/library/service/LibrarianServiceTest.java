@@ -75,4 +75,9 @@ public class LibrarianServiceTest {
 		assertThat(librarianService.updateBook(isbn, book)).isEqualTo(book);
 
 	}
+	
+	@Test
+	public void testDeleteBook() {
+		
+	}
 }
