@@ -55,4 +55,24 @@ public class LibrarianServiceTest {
 
 	}
 
+	@Test
+	public void testUpdateBook() {
+		Book book = new Book();
+		book.setISBN("EMP_6953_2019");
+		book.setTitle("Hibernate");
+		book.setSubject("Java");
+		book.setPublisher("IGH Pubications");
+		book.setLanguage("English");
+		book.setNumberOfPages(1334);
+
+		String isbn = book.getISBN();
+		when(librarianRepository.getOne(isbn)).thenReturn(book);
+
+		book.setPublisher("Pearson Publications");
+
+		when(librarianRepository.save(book)).thenReturn(book);
+
+		assertThat(librarianService.updateBook(isbn, book)).isEqualTo(book);
+
+	}
 }
