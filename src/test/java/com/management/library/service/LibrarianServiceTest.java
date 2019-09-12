@@ -46,4 +46,13 @@ public class LibrarianServiceTest {
 		assertThat(librarianService.getAllBooks()).isEqualTo(bookList);
 	}
 
+	@Test
+	public void testGetBookByISBN() {
+		Book book = new Book("EMP_6953_2019", "Hibernate", "Java", "IGH Pubications", "English", 1232);
+		String isbn = book.getISBN();
+		when(librarianRepository.getOne(isbn)).thenReturn(book);
+		assertThat(librarianService.getBookByISBN(isbn)).isEqualTo(book);
+
+	}
+
 }
