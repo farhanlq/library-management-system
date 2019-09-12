@@ -1,6 +1,9 @@
 package com.management.library.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -75,9 +78,17 @@ public class LibrarianServiceTest {
 		assertThat(librarianService.updateBook(isbn, book)).isEqualTo(book);
 
 	}
-	
+
 	@Test
 	public void testDeleteBook() {
-		
+		Book book = new Book();
+		book.setISBN("EMP_6953_2019");
+		book.setTitle("Hibernate");
+		book.setSubject("Java");
+		book.setPublisher("IGH Pubications");
+		book.setLanguage("English");
+		book.setNumberOfPages(1334);
+
+		String isbn = book.getISBN();
 	}
 }
