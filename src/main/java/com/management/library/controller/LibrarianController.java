@@ -64,11 +64,11 @@ public class LibrarianController {
 	}
 
 	@DeleteMapping("/books/{isbn}")
-	public Map<String, Boolean> deleteBook(@PathVariable String isbn) {
+	public ResponseEntity<Map> deleteBook(@PathVariable String isbn) {
 		log.info("Entering deleteBook() method ");
 		Map<String, Boolean> result = librarianService.deleteBook(isbn);
 		log.info("Exiting deleteBook() method ");
-		return result;
+		return ResponseEntity.ok(result);
 
 	}
 

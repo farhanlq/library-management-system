@@ -97,4 +97,58 @@ public class Book {
 				+ ", language=" + language + ", numberOfPages=" + numberOfPages + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ISBN == null) ? 0 : ISBN.hashCode());
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
+		result = prime * result + numberOfPages;
+		result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
+		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (ISBN == null) {
+			if (other.ISBN != null)
+				return false;
+		} else if (!ISBN.equals(other.ISBN))
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
+			return false;
+		if (numberOfPages != other.numberOfPages)
+			return false;
+		if (publisher == null) {
+			if (other.publisher != null)
+				return false;
+		} else if (!publisher.equals(other.publisher))
+			return false;
+		if (subject == null) {
+			if (other.subject != null)
+				return false;
+		} else if (!subject.equals(other.subject))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+	
+	
+
 }
